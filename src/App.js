@@ -9,15 +9,22 @@ import AddProblemFiles from "./pages/admin/AddProblemFiles";
 import UserPrivateRoute from "./components/user/UserPrivateRoute";
 import SeeProblem from "./pages/user/SeeProblem"
 import SubmitProblem from "./pages/user/SubmitProblem";
-
+import 'bootstrap/dist/css/bootstrap.css';
+import Login from "./pages/public-routes/Login";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
+import ContestPage from "./pages/user/SeeCompete";
+import SeeContest from "./pages/user/SeeContest";
 function App() {
   return (
     <>
       <ThemeProvider>
+      <ToastContainer />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
-
+            <Route path="/" element={<Home />}>
+            </Route>
+            <Route  path="/login" element={<Login />}></Route>
             {/* Admin Private Routes */}
             <Route path="/admin" element={<AdminPrivateRoute />}>
               <Route path="home" element={<AdminDashboard />} />
@@ -25,6 +32,8 @@ function App() {
               <Route path=":contestId/:problemId/addProblemFiles" element={<AddProblemFiles />}/>
             </Route>
             <Route path="/user" element={<UserPrivateRoute />}>
+              <Route path="compete" element={<ContestPage />}/>
+              <Route path="compete/:contestId/" element={<SeeContest />}/>
               <Route path="compete/:contestId/:problemId/" element={<SeeProblem />}/>
               <Route path="compete/:contestId/:problemId/submit" element={<SubmitProblem />}/>
             </Route>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Outlet} from "react-router-dom";
-import { isLoggedIn } from "../../services/auth/util";
+import { isLoggedIn } from "../../services/auth/auth";
 import UserNavbar from "./UserNavbar";
 
 const UserPrivateRoute = () => {

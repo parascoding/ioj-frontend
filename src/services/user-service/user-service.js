@@ -14,3 +14,15 @@ export const getProblemStatementFromBackend = (contestId, problemId) => {
         .get("/compete/"+contestId+"/"+problemId+"/view")
         .then((response) => response.data);
 }
+
+export const getContestList = () => {
+    return myAxios
+    .get("/compete/")
+    .then((response) => response.data);
+}
+
+export const getContestProblemList = (contestId) => {
+    return myAxios
+    .get("/compete/"+contestId+"/")
+    .then((response) => response.data);
+}
