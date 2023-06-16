@@ -35,7 +35,6 @@ const SubmitProblem = () => {
     const formData = new FormData();
     formData.append("sourceCode", srcCode);
     formData.append("userId", getCurrentUserDetail());
-    console.log(getCurrentUserDetail());
     formData.append("contestId", contestId);
     formData.append("problemId", problemId);
     formData.append("language", language);
@@ -43,7 +42,6 @@ const SubmitProblem = () => {
       .then((response) => {
         console.log(response);
         toast.success(response.details);
-        console.log("SETTING");
         setHasSubmitted(true);
         setResult(response.details);
         console.log(result);
@@ -54,17 +52,6 @@ const SubmitProblem = () => {
   };
   return (
     <>
-      {/* <form onSubmit={handleSubmit}>
-        <Input
-          type="file"
-          name="sourceCode"
-          onChange={(e) => {
-            handleUpload(e);
-          }}
-        />
-        
-        <Button type="submit">Submit</Button>
-      </form> */}
       <Container>
         <Row className="mt-4">
           <Col sm={{ size: 6, offset: 3 }}>

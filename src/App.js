@@ -15,6 +15,8 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 import ContestPage from "./pages/user/SeeCompete";
 import SeeContest from "./pages/user/SeeContest";
+import UserDashboard from "./pages/user/HomeDashboard";
+import CreateProblem from "./pages/admin/AddProblem";
 function App() {
   return (
     <>
@@ -27,11 +29,13 @@ function App() {
             <Route  path="/login" element={<Login />}></Route>
             {/* Admin Private Routes */}
             <Route path="/admin" element={<AdminPrivateRoute />}>
-              <Route path="home" element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="createContest" element={<CreateContest />} />
+              <Route path=":contestId/createProblem" element={<CreateProblem />} />
               <Route path=":contestId/:problemId/addProblemFiles" element={<AddProblemFiles />}/>
             </Route>
             <Route path="/user" element={<UserPrivateRoute />}>
+              <Route path="dashboard" element={<UserDashboard />}/>
               <Route path="compete" element={<ContestPage />}/>
               <Route path="compete/:contestId/" element={<SeeContest />}/>
               <Route path="compete/:contestId/:problemId/" element={<SeeProblem />}/>

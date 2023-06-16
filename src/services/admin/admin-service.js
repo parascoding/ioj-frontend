@@ -14,3 +14,20 @@ export const addProblemFiles = (files, contestId, problemId) => {
     .post("/admin/" + contestId + "/" + problemId + "/addProblemFiles", files)
     .then((response) => response.data);
 };
+export const deleteContestUtil = (contestId) => {
+  return myAxios
+    .post("/admin/deleteContest/" + contestId )
+    .then((response) => response.data);
+};
+
+export const addProblem = (contestId, problemId) => {
+  return myAxios
+    .post("/admin/" + contestId + "/" + problemId + "/createProblem")
+    .then((response) => response.data);
+}
+
+export const deleteProblem = (contestId, problemId) => {
+  return myAxios
+    .post("/admin/" + contestId + "/" + problemId + "/deleteProblem")
+    .then((response) => response.data);
+}

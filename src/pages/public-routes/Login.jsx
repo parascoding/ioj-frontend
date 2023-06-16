@@ -13,12 +13,10 @@ import {
   FormFeedback,
 } from "reactstrap";
 import { useState } from "react";
-// import { login } from "../../services/user-service";
 import { toast } from "react-toastify";
 import { doLogin, doLogout, getRole } from "../../services/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/user-service/login";
-// import Logo from "../../img/logo.svg";
 const Login = () => {
   const [data, setData] = useState({
     id: "",
@@ -67,6 +65,7 @@ const Login = () => {
     //   });
     doLogin(data.id, () => {
       console.log("Login details are stored");
+      navigate('/user/dashboard');
     });
   };
   const resetDetails = () => {

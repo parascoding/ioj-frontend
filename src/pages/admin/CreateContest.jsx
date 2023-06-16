@@ -5,8 +5,16 @@ import {
   Checkbox,
   Button,
   Typography,
-} from "@material-tailwind/react";
+  CardTitle,
+  Form,
+  Label,
+  FormGroup,
+  CardHeader,
+  CardBody,
+} from "reactstrap";
 import { createContest } from "../../services/admin/admin-service";
+import { Container } from "reactstrap";
+import { toast } from "react-toastify";
 const CreateContest = () => {
   const [data, setData] = useState({
     contestId: "",
@@ -17,8 +25,8 @@ const CreateContest = () => {
   });
   const convertData = (data) => {
     let ret = {};
-    ret.startTime = data.startDate + " " + data.startTime+":00";
-    ret.endTime = data.endDate + " " + data.endTime+":00";
+    ret.startTime = data.startDate + " " + data.startTime + ":00";
+    ret.endTime = data.endDate + " " + data.endTime + ":00";
     ret.contestId = data.contestId;
     return ret;
   };
@@ -31,6 +39,7 @@ const CreateContest = () => {
     createContest(ret)
       .then((response) => {
         console.log(response);
+        toast.success(response.message);
       })
       .catch((error) => {
         console.log(error);
@@ -39,65 +48,70 @@ const CreateContest = () => {
 
   return (
     <>
-      <div className="container mx-[600px] mt-[100px]">
-        <Card color="transparent" shadow={false}>
-          <Typography variant="h4" color="blue-gray">
-            Add contest
-          </Typography>
-          <Typography color="gray" className="mt-1 font-normal">
-            Enter contest details
-          </Typography>
-          <form
-            className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
-            onSubmit={submitForm}
-          >
-            <div className="mb-4 flex flex-col gap-6">
-              <Input
-                type="date"
-                size="lg"
-                label="Start Date"
-                onChange={(e) => {
-                  handleChange(e, "startDate");
-                }}
-              />
-              <Input
-                type="time"
-                size="lg"
-                label="Start Time"
-                onChange={(e) => {
-                  handleChange(e, "startTime");
-                }}
-              />
-              <Input
-                type="date"
-                size="lg"
-                label="End Date"
-                onChange={(e) => {
-                  handleChange(e, "endDate");
-                }}
-              />
-              <Input
-                type="time"
-                size="lg"
-                label="End Time"
-                onChange={(e) => {
-                  handleChange(e, "endTime");
-                }}
-              />
-              <Input
-                size="lg"
-                label="Contest Id"
-                onChange={(e) => {
-                  handleChange(e, "contestId");
-                }}
-              />
-            </div>
-            <Button className="mt-6" fullWidth onClick={submitForm}>
-              Add Contest
-            </Button>
-          </form>
-        </Card>
-      </div>
+      <Container className="mt-5">
+          <Card color="transparent" shadow={false}>
+            <CardHeader className="text-center">
+              <h3>Add Contest</h3>
+            </CardHeader>
+            <CardBody>
+              <Form onSubmit={submitForm}>
+                <FormGroup>
+                  <Label for="startDate">Start Date</Label>
+                  <Input
+                    type="date"
+                    name="startDate"
+                    onChange={(e) => {
+                      handleChange(e, "startDate");
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="startDate">Start Date</Label>
+                  <Input
+                    type="time"
+                    name="startTime"
+                    onChange={(e) => {
+                      handleChange(e, "startTime");
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="startDate">Start Date</Label>
+                  <Input
+                    type="date"
+                    name="endDate"
+                    onChange={(e) => {
+                      handleChange(e, "endDate");
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="startDate">Start Date</Label>
+                  <Input
+                    type="time"
+                    name="endTime"
+                    onChange={(e) => {
+                      handleChange(e, "endTime");
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="contestId">Contest Id</Label>
+                  <Input
+                    size="lg"
+                    label="Contest Id"
+                    onChange={(e) => {
+                      handleChange(e, "contestId");
+                    }}
+                  />
+                </FormGroup>
+                <Button className="mt-6" color="success" onClick={submitForm}>
+                  Add Contest
+                </Button>
+              </Form>
+            </CardBody>
+          </Card>
+      </Container>
     </>
   );
 };
