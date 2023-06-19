@@ -14,7 +14,7 @@ const AdminPrivateRoute = () => {
         )
     } else{
         return (
-            <Navigate to={"/"} />
+            <Navigate to={"/login"} />
         )
     }
 }

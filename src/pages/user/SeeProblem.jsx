@@ -7,7 +7,7 @@ import { getProblemStatementFromBackend } from "../../services/user-service/user
 import Problem from "./Problem";
 import { Container } from "reactstrap";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { getCurrentUserDetail } from "../../services/auth/auth";
+import { getCurrentUserDetail, getRole } from "../../services/auth/auth";
 
 const SeeProblem = () => {
   const { contestId, problemId } = useParams();
@@ -52,7 +52,7 @@ const SeeProblem = () => {
           }}
         />
         <Button className="mt-2" onClick={handleSubmitButtonClick} color="success" block>Submit Code</Button>
-        {getCurrentUserDetail() == "admin" && (
+        {getRole() == "ADMIN" && (
           <>
             <Button className="mt-2" color="primary" onClick={() =>{
               navigate('/admin/'+contestId+"/"+problemId+"/addProblemFiles");

@@ -5,7 +5,7 @@ import {
 } from "../../services/user-service/user-service";
 import { Container, Table, List, Button, Row, Col } from "reactstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getCurrentUserDetail } from "../../services/auth/auth";
+import { getCurrentUserDetail, getRole } from "../../services/auth/auth";
 import {
   deleteContestUtil,
   deleteProblem,
@@ -54,19 +54,20 @@ const SeeContest = () => {
         toast.error(error.message);
       });
   };
+  
   return (
     <>
       <Container>
         <Row className="mt-4">
           <Col sm={{ size: 6, offset: 3 }}>
-            <h2>
+            <h4>
               Contest Id - {contestId}
               <br />
               Start Time - {convertDate(contestData?.startTime)}
               <br />
               End Time - {convertDate(contestData?.endTime)}
-            </h2>
-
+            </h4>
+            
             <Container>
               <List>
                 {contestData?.listOfProblem?.map((element, index) => {
@@ -74,8 +75,9 @@ const SeeContest = () => {
                     <>
                       <li>
                         <Link to={element}>{element}</Link>
-                        {getCurrentUserDetail() == "admin" && (
+                        {getRole() == "ADMIN" && (
                           <CancelIcon
+                          className="mx-5"
                             onClick={(e) => {
                               removeProblem(e, index);
                             }}
@@ -87,7 +89,7 @@ const SeeContest = () => {
                 })}
               </List>
             </Container>
-            {getCurrentUserDetail() == "admin" && (
+            {getRole() == "ADMIN" && (
               <>
                 <Button
                   onClick={() => {

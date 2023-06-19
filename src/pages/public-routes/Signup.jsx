@@ -16,9 +16,10 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { doLogin, doLogout, getRole } from "../../services/auth/auth";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../services/auth/auth";
-const Login = () => {
+import { signUp } from "../../services/auth/auth";
+const Signup = () => {
   const [data, setData] = useState({
+    name: "",
     id: "",
     password: "",
   });
@@ -32,7 +33,6 @@ const Login = () => {
 
   const handleChange = (event, field) => {
     setData({ ...data, [field]: event.target.value });
-    console.log(data);
   };
   const submitForm = (event) => {
     event.preventDefault();
@@ -42,11 +42,11 @@ const Login = () => {
       toast.error("Username/Password can't be empty");
     }
     // Call API
-    login(data)
+    signUp(data)
       .then((response) => {
         console.log(response);
-        console.log("sucess");
-        toast.success("Loggedd In!");
+        console.log("success");
+        toast.success("Signed up In!");
         setError({
           errors: {},
           isError: false,
@@ -54,11 +54,12 @@ const Login = () => {
         doLogin(response, () => {
           console.log("Login details are stored");
         });
-        navigate('/'+getRole().toLowerCase()+'/dashboard');
+        toast.success("Signed up");
+        navigate("/" + getRole().toLowerCase() + "/dashboard");
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message);
         setError({
           errors: error,
           isError: true,
@@ -83,6 +84,24 @@ const Login = () => {
               </CardHeader>
               <CardBody>
                 <Form onSubmit={submitForm}>
+                  <FormGroup>
+                    <Label for="name">Enter Name</Label>
+                    <Input
+                      type="text"
+                      placeholder="Enter Here"
+                      id="name"
+                      onChange={(e) => {
+                        handleChange(e, "name");
+                      }}
+                      value={data.name}
+                      invalid={
+                        error.errors?.response?.data?.name ? true : false
+                      }
+                    />
+                    <FormFeedback>
+                      {error.errors?.response?.data?.id}
+                    </FormFeedback>
+                  </FormGroup>
                   {/*Id Filed*/}
                   <FormGroup>
                     <Label for="id">Enter Id</Label>
@@ -111,7 +130,7 @@ const Login = () => {
                       onChange={(e) => {
                         handleChange(e, "password");
                       }}
-                      value={data.name}
+                      value={data.password}
                       invalid={
                         error.errors?.response?.data?.password ? true : false
                       }
@@ -143,4 +162,4 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+export default Signup;

@@ -14,7 +14,7 @@ const UserPrivateRoute = () => {
         )
     } else{
         return (
-            <Navigate to={"/"} />
+            <Navigate to={"/login"} />
         )
     }
 }

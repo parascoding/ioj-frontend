@@ -1,3 +1,17 @@
+import { myAxios } from "../base";
+
+export const signUp = (user) => {
+  return myAxios
+    .post("/api/v1/auth/register", user)
+    .then((response) => response.data);
+};
+
+export const login = (user) => {
+  return myAxios
+    .post("/api/v1/auth/authenticiate", user)
+    .then((response) => response.data);
+};
+
 // isLoggedIn
 export const isLoggedIn = () => {
   let data = localStorage.getItem("data");
@@ -21,7 +35,8 @@ export const doLogout = (next) => {
 export const getCurrentUserDetail = () => {
   // return "parascoding";
   if (!isLoggedIn()) return "123";
-  return JSON.parse(localStorage.getItem("data"));
+  console.log(JSON.parse(localStorage.getItem("data")));
+  return JSON.parse(localStorage.getItem("data"))?.id;
 };
 
 export const getRole = () => {
