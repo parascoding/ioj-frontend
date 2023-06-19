@@ -22,10 +22,10 @@ import Signup from "./pages/public-routes/Signup";
 function App() {
   return (
     <>
-      {/* <NavBar /> */}
       <ThemeProvider>
         <ToastContainer />
         <BrowserRouter>
+      <NavBar />
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>

@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { doLogin, doLogout, getRole } from "../../services/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../../services/auth/auth";
+import logo  from "../../img/logo.png"
 const Signup = () => {
   const [data, setData] = useState({
     name: "",
@@ -45,21 +46,18 @@ const Signup = () => {
     signUp(data)
       .then((response) => {
         console.log(response);
-        console.log("success");
-        toast.success("Signed up In!");
+        if(!response.isSuccess)
+          throw new Error(response.message);
+        toast.success(response.message);
         setError({
           errors: {},
           isError: false,
         });
-        doLogin(response, () => {
-          console.log("Login details are stored");
-        });
-        toast.success("Signed up");
-        navigate("/" + getRole().toLowerCase() + "/dashboard");
+        navigate("/login");
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error?.response?.data?.message);
+        toast.error(error.message);
         setError({
           errors: error,
           isError: true,
@@ -83,6 +81,7 @@ const Signup = () => {
                 {/* <h3 className='d-flex justify-content-center'>Login on AMS.</h3> */}
               </CardHeader>
               <CardBody>
+                <img src={logo} width="50%" />
                 <Form onSubmit={submitForm}>
                   <FormGroup>
                     <Label for="name">Enter Name</Label>

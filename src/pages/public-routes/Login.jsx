@@ -11,12 +11,14 @@ import {
   Row,
   Col,
   FormFeedback,
+  CardImg,
 } from "reactstrap";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { doLogin, doLogout, getRole } from "../../services/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/auth/auth";
+import logo from "../../img/logo.png";
 const Login = () => {
   const [data, setData] = useState({
     id: "",
@@ -32,7 +34,7 @@ const Login = () => {
 
   const handleChange = (event, field) => {
     setData({ ...data, [field]: event.target.value });
-    console.log(data);
+    // console.log(data);
   };
   const submitForm = (event) => {
     event.preventDefault();
@@ -45,20 +47,24 @@ const Login = () => {
     login(data)
       .then((response) => {
         console.log(response);
-        console.log("sucess");
-        toast.success("Loggedd In!");
-        setError({
-          errors: {},
-          isError: false,
-        });
-        doLogin(response, () => {
-          console.log("Login details are stored");
-        });
-        navigate('/'+getRole().toLowerCase()+'/dashboard');
+        if(response?.isSuccess ==  true){
+          console.log("sucess");
+          toast.success("Loggedd In!");
+          setError({
+            errors: {},
+            isError: false,
+          });
+          doLogin(response, () => {
+            console.log("Login details are stored");
+          });
+          navigate("/" + getRole().toLowerCase() + "/dashboard");
+        } else{
+          throw new Error(response.message);
+        }
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.response.data.message);
+        toast.error(error.message);
         setError({
           errors: error,
           isError: true,
@@ -78,10 +84,11 @@ const Login = () => {
         <Row className="mt-4">
           <Col sm={{ size: 6, offset: 3 }}>
             <Card color="dark" inverse>
-              <CardHeader>
-                {/* <h3 className='d-flex justify-content-center'>Login on AMS.</h3> */}
-              </CardHeader>
               <CardBody>
+                <img 
+                  src={logo}
+                  width="50%"
+                />
                 <Form onSubmit={submitForm}>
                   {/*Id Filed*/}
                   <FormGroup>

@@ -1,14 +1,16 @@
-import { myAxios } from "../base";
+import { BASE_URL, myAxios } from "../base";
 
 export const signUp = (user) => {
   return myAxios
-    .post("/api/v1/auth/register", user)
+    .post("/auth/signup", user)
     .then((response) => response.data);
 };
 
 export const login = (user) => {
+  console.log(user);
+  console.log(BASE_URL+"/auth/login");
   return myAxios
-    .post("/api/v1/auth/authenticiate", user)
+    .post("/auth/login", user)
     .then((response) => response.data);
 };
 

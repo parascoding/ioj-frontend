@@ -8,7 +8,7 @@ const UserPrivateRoute = () => {
 
         return(
             <>
-            <UserNavbar />
+            {/* <UserNavbar /> */}
             <Outlet />
             </>
         )

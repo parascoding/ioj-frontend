@@ -8,7 +8,7 @@ const AdminPrivateRoute = () => {
 
         return(
             <>
-            <AdminNavbar />
+            {/* <AdminNavbar /> */}
             <Outlet />
             </>
         )
