@@ -8,11 +8,11 @@ export const signUp = (user) => {
 
 export const login = (user) => {
   console.log(user);
-  console.log(BASE_URL+"/auth/login");
   return myAxios
     .post("/auth/login", user)
     .then((response) => response.data);
 };
+
 
 // isLoggedIn
 export const isLoggedIn = () => {

@@ -1,5 +1,7 @@
 import { myAxios } from "../base";
 
+myAxios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('data'))?.jwtToken}`;
+
 export const createContest = (contest) => {
   console.log(contest);
   return myAxios

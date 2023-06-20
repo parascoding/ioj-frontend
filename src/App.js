@@ -19,6 +19,7 @@ import UserDashboard from "./pages/user/HomeDashboard";
 import CreateProblem from "./pages/admin/AddProblem";
 import NavBar from "./components/NavBar";
 import Signup from "./pages/public-routes/Signup";
+import LeaderBoard from "./pages/user/LeaderBoard";
 function App() {
   return (
     <>
@@ -55,6 +56,7 @@ function App() {
                 path="compete/:contestId/:problemId/submit"
                 element={<SubmitProblem />}
               />
+              <Route path="compete/:contestId/leaderBoard" element={<LeaderBoard />} />
             </Route>
           </Routes>
         </BrowserRouter>

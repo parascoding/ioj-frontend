@@ -16,6 +16,7 @@ const SeeContest = () => {
   const [contestData, setContestData] = useState();
   const { contestId } = useParams();
   const navigate = useNavigate();
+  
   useEffect(() => {
     getContestProblemList(contestId)
       .then((response) => {
@@ -54,7 +55,11 @@ const SeeContest = () => {
         toast.error(error.message);
       });
   };
-  
+  const findCurTime = () => {
+    var today = new Date();
+    
+    return (today.getUTCFullYear()+"-"+today.getUTCMonth()+"-"+today.getUTCDate()+" "+today.getHours()+':'+today.getMinutes());
+  }
   return (
     <>
       <Container>
@@ -66,6 +71,29 @@ const SeeContest = () => {
               Start Time - {convertDate(contestData?.startTime)}
               <br />
               End Time - {convertDate(contestData?.endTime)}
+
+              <br />
+              {
+                findCurTime() >= convertDate(contestData?.startTime) && findCurTime() <= convertDate(contestData?.startTime) && (
+                  <>
+                  Round In progress
+                  </>
+                )
+              }
+              {
+                findCurTime() < convertDate(contestData?.startTime) && (
+                  <>
+                  Round In not yet  started
+                  </>
+                )
+              }
+              {
+                findCurTime() > convertDate(contestData?.startTime) && (
+                  <>
+                  Round is finished
+                  </>
+                )
+              }
             </h4>
             
             <Container>

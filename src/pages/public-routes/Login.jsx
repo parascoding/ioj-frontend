@@ -15,10 +15,12 @@ import {
 } from "reactstrap";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { doLogin, doLogout, getRole } from "../../services/auth/auth";
+import {doLogin, doLogout, getRole } from "../../services/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/auth/auth";
 import logo from "../../img/logo.png";
+import { addToken } from "../../services/base";
+import { myAxios } from "../../services/base";
 const Login = () => {
   const [data, setData] = useState({
     id: "",
@@ -57,6 +59,7 @@ const Login = () => {
           doLogin(response, () => {
             console.log("Login details are stored");
           });
+          
           navigate("/" + getRole().toLowerCase() + "/dashboard");
         } else{
           throw new Error(response.message);
