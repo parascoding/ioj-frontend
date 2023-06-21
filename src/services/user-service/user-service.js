@@ -17,6 +17,11 @@ export const getProblemStatementFromBackend = (contestId, problemId) => {
         .then((response) => response.data);
 }
 
+export const getEditorialFromBackend = (contestId, problemId) => {
+    return myAxios
+        .get("/compete/"+contestId+"/"+problemId+"/editorial")
+        .then((response) => response.data);
+}
 export const getContestList = () => {
     
     console.log();

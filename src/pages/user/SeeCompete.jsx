@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getContestList } from "../../services/user-service/user-service";
 import { Container, Table } from "reactstrap";
 import { Link } from "react-router-dom";
-
+import moment from "moment/moment";
 const ContestPage = () => {
   const [contestData, setContestData] = useState();
   useEffect(() => {
@@ -17,9 +17,9 @@ const ContestPage = () => {
     console.log("HI");
   }, []);
   const convertDate = (date) => {
-    const temp = date;
-    date = date.replace("T", " ");
-    return date.slice(0, -13);
+    var t = new Date(date);
+    var formatted = t.toLocaleDateString()+" "+t.toLocaleTimeString();
+    return formatted;
   };
   return (
     <>

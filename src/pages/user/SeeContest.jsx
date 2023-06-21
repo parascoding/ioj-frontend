@@ -12,11 +12,12 @@ import {
 } from "../../services/admin/admin-service";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { toast } from "react-toastify";
+import { CloseButton } from "reactstrap";
 const SeeContest = () => {
   const [contestData, setContestData] = useState();
   const { contestId } = useParams();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     getContestProblemList(contestId)
       .then((response) => {
@@ -28,12 +29,6 @@ const SeeContest = () => {
       });
     console.log("HI");
   }, []);
-  const convertDate = (date) => {
-    if (date == null) return "";
-    const temp = date;
-    date = date.replace("T", " ");
-    return date.slice(0, -13);
-  };
   const deleteContest = () => {
     deleteContestUtil(contestId)
       .then((response) => {
@@ -43,9 +38,10 @@ const SeeContest = () => {
         console.log(error);
       });
   };
-  const removeProblem = (event, index) => {
-    console.log(contestData?.listOfProblem[index]);
-    deleteProblem(contestId, contestData?.listOfProblem[index])
+  const removeProblem = (index) => {
+    console.log(contestData?.problemData);
+    console.log(contestData?.problemData?.[index]);
+    deleteProblem(contestId, contestData?.problemData[index]?.[0])
       .then((response) => {
         console.log(response);
         toast.success(response.message);
@@ -55,11 +51,38 @@ const SeeContest = () => {
         toast.error(error.message);
       });
   };
-  const findCurTime = () => {
-    var today = new Date();
-    
-    return (today.getUTCFullYear()+"-"+today.getUTCMonth()+"-"+today.getUTCDate()+" "+today.getHours()+':'+today.getMinutes());
-  }
+  const convertDate = (date) => {
+    var t = new Date(date);
+    var formatted = t.toLocaleDateString() + " " + t.toLocaleTimeString();
+    return formatted;
+  };
+  const timeDifference = (date1, date2) => {
+    var difference = date1 - date2;
+    if (difference < 0) {
+      return "Event Has Passed";
+    }
+    console.log(difference);
+    var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+    difference -= daysDifference * 1000 * 60 * 60 * 24;
+
+    var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
+    difference -= hoursDifference * 1000 * 60 * 60;
+
+    var minutesDifference = Math.floor(difference / 1000 / 60);
+    difference -= minutesDifference * 1000 * 60;
+
+    var secondsDifference = Math.floor(difference / 1000);
+    return (
+      daysDifference +
+      " Days " +
+      hoursDifference.toString().padStart(2, "0") +
+      ":" +
+      minutesDifference.toString().padStart(2, "0") +
+      ":" +
+      secondsDifference.toString().padStart(2, "0")
+    );
+  };
+
   return (
     <>
       <Container>
@@ -71,51 +94,72 @@ const SeeContest = () => {
               Start Time - {convertDate(contestData?.startTime)}
               <br />
               End Time - {convertDate(contestData?.endTime)}
-
               <br />
-              {
-                findCurTime() >= convertDate(contestData?.startTime) && findCurTime() <= convertDate(contestData?.startTime) && (
+              {new Date().getTime() < contestData?.startTime && (
+                <>
+                  Time Remaining -{" "}
+                  {timeDifference(contestData?.startTime, new Date().getTime())}
+                </>
+              )}
+              {new Date().getTime() > contestData?.endTime && (
+                <>Contest is finished</>
+              )}
+              {new Date().getTime() >= contestData?.startTime &&
+                new Date().getTime() <= contestData?.endTime && (
                   <>
-                  Round In progress
+                    Time Remaining -
+                    {timeDifference(contestData?.endTime, new Date().getTime())}
                   </>
-                )
-              }
-              {
-                findCurTime() < convertDate(contestData?.startTime) && (
-                  <>
-                  Round In not yet  started
-                  </>
-                )
-              }
-              {
-                findCurTime() > convertDate(contestData?.startTime) && (
-                  <>
-                  Round is finished
-                  </>
-                )
-              }
+                )}
             </h4>
-            
+
             <Container>
-              <List>
-                {contestData?.listOfProblem?.map((element, index) => {
-                  return (
-                    <>
-                      <li>
-                        <Link to={element}>{element}</Link>
-                        {getRole() == "ADMIN" && (
-                          <CancelIcon
-                          className="mx-5"
-                            onClick={(e) => {
-                              removeProblem(e, index);
-                            }}
-                          />
-                        )}
-                      </li>
-                    </>
-                  );
-                })}
-              </List>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Id</th>
+                    <th>Difficulty</th>
+                    <th>Solved By</th>
+                    {getRole() == "ADMIN" && (
+                      <>
+                        <th>Remove</th>
+                      </>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {contestData?.problemData?.map((element, index) => {
+                    return (
+                      <>
+                        <tr>
+                          <th>{index + 1}</th>
+
+                          <td>
+                            <Link to={element[0]}>{element[0]}</Link>
+                          </td>
+                          <td>{element[1] == null ? "EASY" : element[1]}</td>
+                          <td>{element[2]}</td>
+
+                          {getRole() == "ADMIN" && (
+                            <>
+                              <td>
+                                <CloseButton
+                                onClick={() => {
+                                  console.log("REMOVE");
+                                  console.log(index);
+                                  removeProblem(index);
+                                }}
+                                />
+                              </td>
+                            </>
+                          )}
+                        </tr>
+                      </>
+                    );
+                  })}
+                </tbody>
+              </Table>
             </Container>
             {getRole() == "ADMIN" && (
               <>
@@ -134,6 +178,18 @@ const SeeContest = () => {
                 </Button>
               </>
             )}
+            {
+              <Button
+                onClick={() => {
+                  navigate("/user/compete/" + contestId + "/leaderBoard");
+                }}
+                color="info"
+                block
+                className="mt-3"
+              >
+                Check Leaderboard
+              </Button>
+            }
           </Col>
         </Row>
       </Container>

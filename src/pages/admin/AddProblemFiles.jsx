@@ -25,6 +25,8 @@ const AddProblemFiles = () => {
     problemStatement: null,
     inputFile: null,
     outputFile: null,
+    editorialFile: null,
+    difficulty: "",
   });
 
   const [temp, setTemp] = useState(null);
@@ -42,6 +44,7 @@ const AddProblemFiles = () => {
     formData.append("problemStatement", file.problemStatement);
     formData.append("inputFile", file.inputFile);
     formData.append("outputFile", file.outputFile);
+    formData.append("editorialFile", file.editorialFile);
 
     addProblemFiles(formData, contestId, problemId)
       .then((response) => {
@@ -64,42 +67,63 @@ const AddProblemFiles = () => {
               <CardBody>
                 <Form onSubmit={handleSubmit}>
                   <FormGroup>
-                    <Label for="problemSatement">
-                      Problem Statement
-                    </Label>
-                  <Input
-                    type="file"
-                    name="problemStatement"
-                    onChange={(e) => {
-                      handleUpload(e, "problemStatement");
-                    }}
-                  />
+                    <Label for="problemSatement">Problem Statement</Label>
+                    <Input
+                      type="file"
+                      name="problemStatement"
+                      onChange={(e) => {
+                        handleUpload(e, "problemStatement");
+                      }}
+                    />
                   </FormGroup>
                   <FormGroup>
-                  <Label for="inputFile">
-                      Input File
-                    </Label>
-                  <Input
-                    type="file"
-                    name="inputFile"
-                    onChange={(e) => {
-                      handleUpload(e, "inputFile");
-                    }}
-                  />
+                    <Label for="inputFile">Input File</Label>
+                    <Input
+                      type="file"
+                      name="inputFile"
+                      onChange={(e) => {
+                        handleUpload(e, "inputFile");
+                      }}
+                    />
                   </FormGroup>
                   <FormGroup>
-                  <Label for="outputFile">
-                      Output File
-                    </Label>
-                  <Input
-                    type="file"
-                    name="outputFile"
-                    onChange={(e) => {
-                      handleUpload(e, "outputFile");
-                    }}
-                  />
+                    <Label for="outputFile">Output File</Label>
+                    <Input
+                      type="file"
+                      name="outputFile"
+                      onChange={(e) => {
+                        handleUpload(e, "outputFile");
+                      }}
+                    />
                   </FormGroup>
-                  <Button type="submit" color="success">Submit</Button>
+                  <FormGroup>
+                    <Label for="editorialFile">Editorial File</Label>
+                    <Input
+                      type="file"
+                      name="editorialFile"
+                      onChange={(e) => {
+                        handleUpload(e, "editorialFile");
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="difficulty">Difficulty</Label>
+                    <Input
+                      type="select"
+                      name="difficulty"
+                      onChange={(e) => {
+                        handleUpload(e, "difficulty");
+                      }}
+                    >
+                      <option>?</option>
+                      <option>Easy</option>
+                      <option>Medium</option>
+                      <option>Hard</option>
+                    </Input>
+                  </FormGroup>
+                  <Button type="submit" color="success">
+                    Submit
+                  </Button>
                 </Form>
               </CardBody>
             </Card>

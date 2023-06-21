@@ -19,6 +19,7 @@ const LeaderBoard = () => {
     fetchLeaderBoard(contestId)
       .then((response) => {
         if (!response.isSuccess) throw new Error(response.message);
+        console.log(response);
         const data = convertData(response.leaderBoard);
         console.log(response.leaderBoard);
         toast.success(response.message);

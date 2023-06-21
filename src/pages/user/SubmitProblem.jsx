@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { submitCode } from "../../services/user-service/user-service";
 import {
   Container,
@@ -38,16 +38,21 @@ const SubmitProblem = () => {
     formData.append("contestId", contestId);
     formData.append("problemId", problemId);
     formData.append("language", language);
+    formData.append('timeStamp', new Date().getTime());
+    console.log(new Date().getTime());
     submitCode(formData, contestId, problemId)
       .then((response) => {
         console.log(response);
-        toast.success(response.details);
         setHasSubmitted(true);
         setResult(response.details);
+        if(response.isSuccess == null || response.isSuccess != true)
+          throw new Error(response.details);
+        toast.success(response.details);
         console.log(result);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.message);
+        console.log(error.message);
       });
   };
   return (
@@ -55,7 +60,7 @@ const SubmitProblem = () => {
       <Container>
         <Row className="mt-4">
           <Col sm={{ size: 6, offset: 3 }}>
-            <Card color="dark" inverse>
+            <Card>
               <CardHeader className="text-center">
                 <h3>Submit Code</h3>
               </CardHeader>
@@ -73,13 +78,12 @@ const SubmitProblem = () => {
                   <FormGroup>
                     <Label for="srcCode">File</Label>
                     <Input id="srcCode" name="srcCode" type="file" onChange={handleUpload}/>
-                    <FormText>
-                      This is some placeholder block-level help text for the
-                      above input. It's a bit lighter and easily wraps to a new
-                      line.
+                    <FormText >
+                      *Your code should read the data from file (whose path will be passed as first argument) and print into file (whose path will be passed as second argument). 
+                      For  more please  refer <Link to="/faq">here</Link>
                     </FormText>
                   </FormGroup>
-                  <Button onClick={handleSubmit}>Submit</Button>
+                  <Button onClick={handleSubmit} color="primary">Submit</Button>
                 </Form>
               </CardBody>
             </Card>

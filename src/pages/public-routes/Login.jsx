@@ -73,10 +73,6 @@ const Login = () => {
           isError: true,
         });
       });
-    // doLogin(data.id, () => {
-    //   console.log("Login details are stored");
-    //   navigate('/user/dashboard');
-    // });
   };
   const resetDetails = () => {
     setData({});
@@ -90,7 +86,9 @@ const Login = () => {
               <CardBody>
                 <img 
                   src={logo}
-                  width="50%"
+                  width="500rem"
+                  // loading="true"  
+                  className="mx-5"
                 />
                 <Form onSubmit={submitForm}>
                   {/*Id Filed*/}

@@ -2,44 +2,39 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import { Card, Input, Button } from "reactstrap";
-import { submitCode } from "../../services/user-service/user-service";
+import { getEditorialFromBackend, submitCode } from "../../services/user-service/user-service";
 import { getProblemStatementFromBackend } from "../../services/user-service/user-service";
 import Problem from "./Problem";
 import { Container } from "reactstrap";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { getCurrentUserDetail, getRole } from "../../services/auth/auth";
-const SeeProblem = () => {
+
+const Editorial = () => {
   const { contestId, problemId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [problemStatement, setProblemStatement] = useState(null);
-  const fetchProblemStatement = () => {
-    getProblemStatementFromBackend(contestId, problemId)
+  const [editorial, setEditorial] = useState();
+  const fetchEditorial = () => {
+    getEditorialFromBackend(contestId, problemId)
       .then((response) => {
         console.log(response);
-        setProblemStatement(response.markdown);
+        setEditorial(response.markDown);
       })
       .catch((error) => {
         console.log(error);
       });
+      console.log(editorial);
   };
   useEffect(() => {
-    fetchProblemStatement();
+    fetchEditorial();
   }, []);
-  const handleSubmitButtonClick = () => {
-    console.log(location);
-    navigate(location.pathname + "/submit");
-  };
-  const handleEditorialButtonClick = () => {
-    navigate(location.pathname+'/editorial');
-  }
   return (
     <>
       <Container>
         {/* <div className="Container" dangerouslySetInnerHTML={{__html: problemStatement
         }}></div> */}
         <MarkdownPreview
-          source={problemStatement}
+          source={editorial}
           rehypeRewrite={(node, index, parent) => {
             if (
               node.tagName === "a" &&
@@ -53,17 +48,16 @@ const SeeProblem = () => {
             "data-color-mode": "light",
           }}
         />
-        <Button className="mt-2" onClick={handleSubmitButtonClick} color="success" block>Submit Code</Button>
-        <Button className="mt-2" onClick={handleEditorialButtonClick} color="info" block>Check Editorial</Button>
+        
         {getRole() == "ADMIN" && (
           <>
             <Button className="mt-2" color="primary" onClick={() =>{
               navigate('/admin/'+contestId+"/"+problemId+"/addProblemFiles");
-            }} block>Edit Problem</Button>
+            }} block>Edit</Button>
           </>
         )}
       </Container>
     </>
   );
 };
-export default SeeProblem;
+export default Editorial;
